@@ -11,6 +11,10 @@ namespace SIGSUC.DAL.Entities.Common.Mapping
         {
             builder.HasKey(p => p.PaisId);
 
+            builder.Property(p => p.PaisId)
+                .IsRequired()
+                .ValueGeneratedNever();
+
             builder.HasOne(c => c.Continente).WithMany(u => u.Paises).HasForeignKey(p => p.ContinenteId);
 
 

@@ -11,12 +11,16 @@ namespace SIGSUC.DAL.Entities.Common.Mapping
         {
             builder.HasKey(u => new { u.PaisId, u.RegiaoId });
 
-            builder.HasOne(p => p.Pais).WithMany(u => u.Regioes).HasForeignKey(p => p.PaisId);
+            builder.HasOne(p => p.Pais).WithMany(u => u.Regioes)
+                .HasForeignKey(p => p.PaisId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(p => p.PaisId)
+                .IsRequired()
                 .ValueGeneratedNever();
 
             builder.Property(p => p.RegiaoId)
+                .IsRequired()
                 .ValueGeneratedNever();
 
             builder.Property(p => p.Descricao)

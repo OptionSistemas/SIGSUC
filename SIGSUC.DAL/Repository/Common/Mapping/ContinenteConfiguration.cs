@@ -11,6 +11,10 @@ namespace SIGSUC.DAL.Entities.Common.Mapping
         {
             builder.HasKey(c => c.ContinenteId);
 
+            builder.Property(p => p.ContinenteId)
+                .IsRequired()
+                .ValueGeneratedNever();
+
             builder.Property(p => p.Descricao)
                 .HasColumnType("varchar(40)")
                 .IsRequired();

@@ -11,6 +11,8 @@ namespace SIGSUC.Domain.Entities.Common
         public int RegiaoId { get; set; }
         public virtual Regiao Regiao { get; set; }
 
+
+
         public override void Validate()
         {
             throw new System.NotImplementedException();

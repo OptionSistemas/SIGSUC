@@ -12,6 +12,36 @@
     <Compile Remove="Migrations\20190625134453_InitialCreate.Designer.cs" />
     <Compile Remove="Migrations\20190625163402_InitialDatabase.cs" />
     <Compile Remove="Migrations\20190625163402_InitialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625171932_InitialDatabase.cs" />
+    <Compile Remove="Migrations\20190625171932_InitialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625173924_InitialDatabase.cs" />
+    <Compile Remove="Migrations\20190625173924_InitialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625175311_InitialDatabase.cs" />
+    <Compile Remove="Migrations\20190625175311_InitialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625180153_InicialDatabase.cs" />
+    <Compile Remove="Migrations\20190625180153_InicialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625180737_InicialDatabase.cs" />
+    <Compile Remove="Migrations\20190625180737_InicialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625182515_InicialDatabase.cs" />
+    <Compile Remove="Migrations\20190625182515_InicialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625182659_DadosIniciais.cs" />
+    <Compile Remove="Migrations\20190625182659_DadosIniciais.Designer.cs" />
+    <Compile Remove="Migrations\20190625184949_InicialDatabase.cs" />
+    <Compile Remove="Migrations\20190625184949_InicialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625185032_DadosIniciais.cs" />
+    <Compile Remove="Migrations\20190625185032_DadosIniciais.Designer.cs" />
+    <Compile Remove="Migrations\20190625185600_InicialDatabase.cs" />
+    <Compile Remove="Migrations\20190625185600_InicialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625185629_DadosIniciais.cs" />
+    <Compile Remove="Migrations\20190625185629_DadosIniciais.Designer.cs" />
+    <Compile Remove="Migrations\20190625190007_InicialDatabase.cs" />
+    <Compile Remove="Migrations\20190625190007_InicialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625190037_DadosIniciais.cs" />
+    <Compile Remove="Migrations\20190625190037_DadosIniciais.Designer.cs" />
+    <Compile Remove="Migrations\20190625190948_InicialDatabase.cs" />
+    <Compile Remove="Migrations\20190625190948_InicialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20190625191055_DadosIniciais.cs" />
+    <Compile Remove="Migrations\20190625191055_DadosIniciais.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,10 +55,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SIGSUC.Domain\SIGSUC.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
