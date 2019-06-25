@@ -13,6 +13,8 @@ namespace SIGSUC.DAL.Entities.Common.Mapping
 
             builder.HasOne(p => p.Pais).WithMany(u => u.UFs).HasForeignKey(p => p.PaisId);
 
+            builder.HasOne(p => p.Regiao).WithMany(u => u.UFs).HasForeignKey(p => p.RegiaoId);
+
             builder.Property(p => p.PaisId)
                 .ValueGeneratedNever();
 

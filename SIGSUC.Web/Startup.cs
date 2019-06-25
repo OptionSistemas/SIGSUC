@@ -31,8 +31,10 @@ namespace SIGSUC.Web
                                                         option.UseSqlServer(connectionString,
                                                                             m => m.MigrationsAssembly("SIGSUC.DAL")));
 
+            services.AddScoped<IContinenteRepository, ContinenteRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();
             services.AddScoped<IUFRepository, UFRepository>();
+            services.AddScoped<IRegiaoRepository, RegiaoRepository>();
 
 
             services.AddControllers();

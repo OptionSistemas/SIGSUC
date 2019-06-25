@@ -11,9 +11,8 @@ namespace SIGSUC.DAL.Entities.Common.Mapping
         {
             builder.HasKey(p => p.PaisId);
 
-            builder.Property(p => p.Nome)
-                .HasColumnType("varchar(100)")
-                .IsRequired();
+            builder.HasOne(c => c.Continente).WithMany(u => u.Paises).HasForeignKey(p => p.ContinenteId);
+
 
             builder.Property(p => p.Nome)
                 .HasColumnType("varchar(100)")

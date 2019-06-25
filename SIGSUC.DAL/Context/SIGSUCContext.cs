@@ -6,6 +6,7 @@ namespace SIGSUC.DAL.Context
 {
     public class SIGSUCContext : DbContext
     {
+        public DbSet<Continente> Continentes { get; set; }
         public DbSet<Pais> Paises { get; set; }
         public DbSet<UF> UFs { get; set; }
 
@@ -15,6 +16,7 @@ namespace SIGSUC.DAL.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ContinenteConfiguration());
             modelBuilder.ApplyConfiguration(new PaisConfiguration());
             modelBuilder.ApplyConfiguration(new UFConfiguration());
 
