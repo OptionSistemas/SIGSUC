@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using SIGSUC.DAL.Context;
+using SIGSUC.Domain.Interfaces;
+using SIGSUC.DAL.Repository.Common;
 
 namespace SIGSUC.Web
 {
@@ -17,7 +14,10 @@ namespace SIGSUC.Web
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder();
+            builder.AddJsonFile("sigsuc.json", optional: false, reloadOnChange: true);
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -25,6 +25,16 @@ namespace SIGSUC.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var connectionString = Configuration.GetConnectionString("SIGSUCDB");
+            services.AddDbContext<SIGSUCContext>(option =>
+                                                        option.UseSqlServer(connectionString,
+                                                                            m => m.MigrationsAssembly("SIGSUC.DAL")));
+
+            services.AddScoped<IPaisRepository, PaisRepository>();
+            services.AddScoped<IUFRepository, UFRepository>();
+
+
             services.AddControllers();
         }
 

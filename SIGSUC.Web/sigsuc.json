@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "SIGSUCDB": "Server=TI-CPU-03\\SQLSERVER17; Database=SIGSUC; User Id = sa; Password=@Admin123$;"
+  }
+}
