@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using SIGSUC.DAL.Context;
 using SIGSUC.Domain.Interfaces;
@@ -30,12 +31,18 @@ namespace SIGSUC.Web
             services.AddDbContext<SIGSUCContext>(option =>
                                                         option.UseSqlServer(connectionString,
                                                                             m => m.MigrationsAssembly("SIGSUC.DAL")));
+            services.AddDefaultIdentity<IdentityUser>()
+                 .AddEntityFrameworkStores<SIGSUCContext>();
+
+
+            
 
             services.AddScoped<IContinenteRepository, ContinenteRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();
             services.AddScoped<IUFRepository, UFRepository>();
             services.AddScoped<IRegiaoRepository, RegiaoRepository>();
 
+            services.AddFluentValidation();
 
             services.AddControllers();
         }
@@ -46,6 +53,7 @@ namespace SIGSUC.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -55,13 +63,19 @@ namespace SIGSUC.Web
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles(); // deve ser antes do UseRouting()
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapAreaControllerRoute("Admin", "Admin", "Admin/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapAreaControllerRoute("Common", "Common", "Common/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

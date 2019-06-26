@@ -1,0 +1,47 @@
+﻿@model IEnumerable<SIGSUC.Domain.Entities.Common.Pais>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Continente)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodigoArea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Continente.Descricao)
+            </td>
+            <td>
+                <a asp-area="Common" asp-action="Edit" asp-route-id="@item.PaisId">Edit</a> |
+                <a asp-area="Common" asp-action="Details" asp-route-id="@item.PaisId">Details</a> |
+                <a asp-area="Common" asp-action="Delete" asp-route-id="@item.PaisId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
