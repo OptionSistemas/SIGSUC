@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SIGSUC.Domain.Entities.Common;
 using SIGSUC.DAL.Entities.Common.Mapping;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SIGSUC.DAL.Context
 {
-    public class SIGSUCContext : DbContext
+    public class SIGSUCContext : IdentityDbContext
     {
         public DbSet<Continente> Continentes { get; set; }
         public DbSet<Pais> Paises { get; set; }
