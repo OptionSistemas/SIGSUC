@@ -8,6 +8,10 @@ using Microsoft.Extensions.Hosting;
 using SIGSUC.DAL.Context;
 using SIGSUC.Domain.Interfaces;
 using SIGSUC.DAL.Repository.Common;
+using FluentValidation;
+using SIGSUC.Domain.Entities.Common.Validations;
+using SIGSUC.Domain.Entities.Common;
+using FluentValidation.AspNetCore;
 
 namespace SIGSUC.Web
 {
@@ -35,16 +39,18 @@ namespace SIGSUC.Web
                  .AddEntityFrameworkStores<SIGSUCContext>();
 
 
-            
 
-            services.AddScoped<IContinenteRepository, ContinenteRepository>();
-            services.AddScoped<IPaisRepository, PaisRepository>();
-            services.AddScoped<IUFRepository, UFRepository>();
-            services.AddScoped<IRegiaoRepository, RegiaoRepository>();
 
-            services.AddFluentValidation();
+            services.AddControllersWithViews();
+            services.AddRazorPages().AddFluentValidation();
 
-            services.AddControllers();
+            services.AddTransient<IContinenteRepository, ContinenteRepository>();
+            services.AddTransient<IPaisRepository, PaisRepository>();
+            services.AddTransient<IValidator<Pais>, PaisValidator>();
+            services.AddTransient<IUFRepository, UFRepository>();
+            services.AddTransient<IRegiaoRepository, RegiaoRepository>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

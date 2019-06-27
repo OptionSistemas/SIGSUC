@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace SIGSUC.Domain.Entities.Common.Validations
 {
-    class PaisValidator : AbstractValidator<Pais>
+    public class PaisValidator : AbstractValidator<Pais>
     {
         public PaisValidator()
         {
