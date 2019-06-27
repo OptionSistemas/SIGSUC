@@ -6,8 +6,13 @@ namespace SIGSUC.DAL.Repository.Common
 {
     public class PaisRepository : BaseRepository<Pais>, IPaisRepository
     {
-        public PaisRepository(SIGSUCContext sigsucContext) : base(sigsucContext)
+        public PaisRepository(SIGSUCContext context) : base(context)
         {
         }
+        public SIGSUCContext SIGSUCContext
+        {
+            get { return Context as SIGSUCContext; }
+        }
+
     }
 }

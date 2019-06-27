@@ -1,36 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SIGSUC.DAL.Context;
 using SIGSUC.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace SIGSUC.DAL.Repository
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        protected readonly SIGSUCContext SICSUCContext;
+        protected readonly DbContext Context;
         internal DbSet<TEntity> _dbSet;
 
-        public BaseRepository(SIGSUCContext sicsucContexto)
+        public BaseRepository(DbContext context)
         {
-            SICSUCContext = sicsucContexto;
-            _dbSet = SICSUCContext.Set<TEntity>();
+            Context = context;
+            _dbSet = context.Set<TEntity>();
         }
 
         public void Add(TEntity entity)
         {
 
-            _dbSet.Add(entity);
-            SICSUCContext.SaveChanges();
+            _dbSet.Add(entity);           
         }
 
         public void AddRange(IEnumerable<TEntity> entities)
         {
             _dbSet.AddRange(entities);
-            SICSUCContext.SaveChanges();
+            
         }
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
@@ -43,21 +41,19 @@ namespace SIGSUC.DAL.Repository
             return _dbSet.Find(id);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return _dbSet.ToList();
+            return await _dbSet.ToListAsync();
         }
 
         public void Remove(TEntity entity)
         {
             _dbSet.Remove(entity);
-            SICSUCContext.SaveChanges();
         }
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
             _dbSet.RemoveRange(entities);
-            SICSUCContext.SaveChanges();
         }
 
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
@@ -68,8 +64,7 @@ namespace SIGSUC.DAL.Repository
         public void Update(TEntity entity)
         {
             _dbSet.Attach(entity);
-            SICSUCContext.Entry(entity).State = EntityState.Modified;
-            SICSUCContext.SaveChanges();
+            Context.Entry(entity).State = EntityState.Modified;
         }
     }
 }

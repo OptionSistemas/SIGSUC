@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SIGSUC.DAL.Context;
 using SIGSUC.Domain.Entities.Common;
+using SIGSUC.Domain.Interfaces;
 
 namespace SIGSUC.Web.Areas.Common.Controllers
 {
@@ -14,20 +15,22 @@ namespace SIGSUC.Web.Areas.Common.Controllers
     [Area("Common")]
     public class PaisController : Controller
     {
-        private readonly SIGSUCContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PaisController(SIGSUCContext context)
+        public PaisController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: Common/Pais
         public async Task<IActionResult> Index()
         {
-            var sIGSUCContext = _context.Paises.Include(p => p.Continente);
-            return View(await sIGSUCContext.ToListAsync());
+            /*var sIGSUCContext = _context.Paises.Include(p => p.Continente);
+            return View(await sIGSUCContext.ToListAsync());*/
+            var paises =  await _unitOfWork.Paises.GetAllAsync();
+            return View(paises);
         }
-
+        /*
         // GET: Common/Pais/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,11 +49,12 @@ namespace SIGSUC.Web.Areas.Common.Controllers
 
             return View(pais);
         }
+        */
 
         // GET: Common/Pais/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ContinenteId"] = new SelectList(_context.Continentes, "ContinenteId", "Descricao");
+            ViewData["ContinenteId"] = new SelectList(await _unitOfWork.Continentes.GetAllAsync(), "ContinenteId", "Descricao");
             return View();
         }
 
@@ -63,15 +67,16 @@ namespace SIGSUC.Web.Areas.Common.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pais);
-                await _context.SaveChangesAsync();
+                _unitOfWork.Paises.Add(pais);
+                await _unitOfWork.Commit();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ContinenteId"] = new SelectList(_context.Continentes, "ContinenteId", "Descricao", pais.ContinenteId);
+            ViewData["ContinenteId"] = new SelectList(await _unitOfWork.Continentes.GetAllAsync(), "ContinenteId", "Descricao", pais.ContinenteId);
             return View(pais);
         }
 
-        // GET: Common/Pais/Edit/5
+        /*
+         * // GET: Common/Pais/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -158,5 +163,6 @@ namespace SIGSUC.Web.Areas.Common.Controllers
         {
             return _context.Paises.Any(e => e.PaisId == id);
         }
+        */
     }
 }

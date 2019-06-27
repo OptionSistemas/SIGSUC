@@ -6,8 +6,13 @@ namespace SIGSUC.DAL.Repository.Common
 {
     public class UFRepository : BaseRepository<UF>, IUFRepository
     {
-        public UFRepository(SIGSUCContext sigsucContext) : base(sigsucContext)
+        public UFRepository(SIGSUCContext context) : base(context)
         {
+
+        }
+        public SIGSUCContext SIGSUCContext
+        {
+            get { return Context as SIGSUCContext; }
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace SIGSUC.Domain.Entities.Common.Validations
 {

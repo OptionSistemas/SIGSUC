@@ -6,8 +6,13 @@ namespace SIGSUC.DAL.Repository.Common
 {
     public class ContinenteRepository : BaseRepository<Continente>, IContinenteRepository
     {
-        public ContinenteRepository(SIGSUCContext sigsucContext) : base(sigsucContext)
+        public ContinenteRepository(SIGSUCContext context) : base(context)
         {
         }
+        public SIGSUCContext SIGSUCContext
+        {
+            get { return Context as SIGSUCContext; }
+        }
+
     }
 }

@@ -12,6 +12,7 @@ using FluentValidation;
 using SIGSUC.Domain.Entities.Common.Validations;
 using SIGSUC.Domain.Entities.Common;
 using FluentValidation.AspNetCore;
+using SIGSUC.DAL.Repository;
 
 namespace SIGSUC.Web
 {
@@ -35,6 +36,7 @@ namespace SIGSUC.Web
             services.AddDbContext<SIGSUCContext>(option =>
                                                         option.UseSqlServer(connectionString,
                                                                             m => m.MigrationsAssembly("SIGSUC.DAL")));
+                                                                            
             services.AddDefaultIdentity<IdentityUser>()
                  .AddEntityFrameworkStores<SIGSUCContext>();
 
@@ -42,13 +44,18 @@ namespace SIGSUC.Web
 
 
             services.AddControllersWithViews();
-            services.AddRazorPages().AddFluentValidation();
+            //services.AddRazorPages().AddFluentValidation();
+            services.AddRazorPages().AddFluentValidation(fvc =>
+                            fvc.RegisterValidatorsFromAssemblyContaining<ContinenteValidator>());
 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+/*
             services.AddTransient<IContinenteRepository, ContinenteRepository>();
             services.AddTransient<IPaisRepository, PaisRepository>();
             services.AddTransient<IValidator<Pais>, PaisValidator>();
             services.AddTransient<IUFRepository, UFRepository>();
             services.AddTransient<IRegiaoRepository, RegiaoRepository>();
+            */
 
 
         }

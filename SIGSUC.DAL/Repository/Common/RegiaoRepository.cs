@@ -6,8 +6,13 @@ namespace SIGSUC.DAL.Repository.Common
 {
     public class RegiaoRepository : BaseRepository<Regiao>, IRegiaoRepository
     {
-        public RegiaoRepository(SIGSUCContext sigsucContext) : base(sigsucContext)
+        public RegiaoRepository(SIGSUCContext context) : base(context)
         {
         }
+        public SIGSUCContext SIGSUCContext
+        {
+            get { return Context as SIGSUCContext; }
+        }
+
     }
 }
