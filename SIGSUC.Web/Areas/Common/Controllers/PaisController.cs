@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using SIGSUC.DAL.Context;
 using SIGSUC.Domain.Entities.Common;
 using SIGSUC.Domain.Interfaces;
+using System.Threading.Tasks;
 
 namespace SIGSUC.Web.Areas.Common.Controllers
 {
-    [Route("api/common/{controller}/{action}")]
+    [Route("api/common/[controller]/{action}")]
     [Area("Common")]
     public class PaisController : Controller
     {
@@ -75,8 +71,9 @@ namespace SIGSUC.Web.Areas.Common.Controllers
             return View(pais);
         }
 
-        /*
-         * // GET: Common/Pais/Edit/5
+
+        // GET: Common/Pais/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,22 +81,24 @@ namespace SIGSUC.Web.Areas.Common.Controllers
                 return NotFound();
             }
 
-            var pais = await _context.Paises.FindAsync(id);
+            var pais = await _unitOfWork.Paises.GetAsync(id);
             if (pais == null)
             {
                 return NotFound();
             }
-            ViewData["ContinenteId"] = new SelectList(_context.Continentes, "ContinenteId", "Descricao", pais.ContinenteId);
+            ViewData["ContinenteId"] = new SelectList(await _unitOfWork.Continentes.GetAllAsync(), "ContinenteId", "Descricao", pais.ContinenteId);
+            ViewData["id"] = id;
             return View(pais);
         }
 
         // POST: Common/Pais/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PaisId,Nome,CodigoArea,ContinenteId")] Pais pais)
-        {
+        public async Task<IActionResult> EditPost(int id, [Bind("PaisId,Nome,CodigoArea,ContinenteId")] Pais pais)
+            {
             if (id != pais.PaisId)
             {
                 return NotFound();
@@ -109,8 +108,8 @@ namespace SIGSUC.Web.Areas.Common.Controllers
             {
                 try
                 {
-                    _context.Update(pais);
-                    await _context.SaveChangesAsync();
+                    _unitOfWork.Paises.Update(pais);
+                    await _unitOfWork.Commit(); 
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,11 +124,11 @@ namespace SIGSUC.Web.Areas.Common.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ContinenteId"] = new SelectList(_context.Continentes, "ContinenteId", "Descricao", pais.ContinenteId);
+            ViewData["ContinenteId"] = new SelectList(await _unitOfWork.Continentes.GetAllAsync(), "ContinenteId", "Descricao", pais.ContinenteId);
             return View(pais);
         }
 
-        // GET: Common/Pais/Delete/5
+         // GET: Common/Pais/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,9 +136,7 @@ namespace SIGSUC.Web.Areas.Common.Controllers
                 return NotFound();
             }
 
-            var pais = await _context.Paises
-                .Include(p => p.Continente)
-                .FirstOrDefaultAsync(m => m.PaisId == id);
+            var pais = await _unitOfWork.Paises.GetAsync(id);
             if (pais == null)
             {
                 return NotFound();
@@ -153,16 +150,16 @@ namespace SIGSUC.Web.Areas.Common.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pais = await _context.Paises.FindAsync(id);
-            _context.Paises.Remove(pais);
-            await _context.SaveChangesAsync();
+            var pais = await _unitOfWork.Paises.GetAsync(id);
+            _unitOfWork.Paises.Remove(pais);
+            await _unitOfWork.Commit();
             return RedirectToAction(nameof(Index));
         }
 
+
         private bool PaisExists(int id)
         {
-            return _context.Paises.Any(e => e.PaisId == id);
+            return (_unitOfWork.Paises.Find(e => e.PaisId == id) != null);
         }
-        */
     }
 }

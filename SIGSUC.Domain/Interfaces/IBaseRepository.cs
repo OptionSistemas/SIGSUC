@@ -8,7 +8,7 @@ namespace SIGSUC.Domain.Interfaces
     public interface IBaseRepository<TEntity> where TEntity : class
     {
 
-        TEntity Get(int? id);
+        Task<TEntity> GetAsync(int? id);
         Task<IEnumerable<TEntity>> GetAllAsync();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 

@@ -41,8 +41,6 @@ namespace SIGSUC.Web
                  .AddEntityFrameworkStores<SIGSUCContext>();
 
 
-
-
             services.AddControllersWithViews();
             //services.AddRazorPages().AddFluentValidation();
             services.AddRazorPages().AddFluentValidation(fvc =>

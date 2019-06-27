@@ -36,9 +36,9 @@ namespace SIGSUC.DAL.Repository
             return _dbSet.Where(predicate);
         }
 
-        public TEntity Get(int? id)
+        public async Task<TEntity> GetAsync(int? id)
         {
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
