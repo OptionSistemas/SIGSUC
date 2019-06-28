@@ -1,18 +1,17 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using SIGSUC.DAL.Context;
-using SIGSUC.Domain.Interfaces;
-using SIGSUC.DAL.Repository.Common;
-using FluentValidation;
-using SIGSUC.Domain.Entities.Common.Validations;
-using SIGSUC.Domain.Entities.Common;
-using FluentValidation.AspNetCore;
 using SIGSUC.DAL.Repository;
+using SIGSUC.Domain.Entities.Common.Validations;
+using SIGSUC.Domain.Interfaces;
 
 namespace SIGSUC.Web
 {
@@ -41,10 +40,17 @@ namespace SIGSUC.Web
                  .AddEntityFrameworkStores<SIGSUCContext>();
 
 
-            services.AddControllersWithViews();
-            //services.AddRazorPages().AddFluentValidation();
-            services.AddRazorPages().AddFluentValidation(fvc =>
+            services
+                    .AddMvc()
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                    // Maintain property names during serialization. See:
+                    // https://github.com/aspnet/Announcements/issues/194
+                    .AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver())
+                    .AddFluentValidation(fvc =>
                             fvc.RegisterValidatorsFromAssemblyContaining<ContinenteValidator>());
+                            
+            // Add Kendo UI services to the services container
+            services.AddKendo();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 /*
@@ -59,7 +65,7 @@ namespace SIGSUC.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -76,11 +82,10 @@ namespace SIGSUC.Web
 
             app.UseStaticFiles(); // deve ser antes do UseRouting()
 
-            app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
 
+            /*
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -88,6 +93,24 @@ namespace SIGSUC.Web
                 endpoints.MapAreaControllerRoute("Common", "Common", "Common/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+            */
+            app.UseMvc(routes =>
+            {
+                routes.MapAreaRoute(
+                            name: "Admin",
+                            areaName: "Admin",
+                            template: "Admin/{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapAreaRoute(
+                            name: "Common",
+                            areaName: "Common",
+                            template: "Common/{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
         }
     }
 }

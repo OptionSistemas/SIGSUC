@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SIGSUC.Web.Areas.Common.Controllers
 {
-    [Route("api/common/[controller]/{action}")]
     [Area("Common")]
+    [Route("api/common/[controller]/{action}/{id?}")]
     public class PaisController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -87,7 +87,6 @@ namespace SIGSUC.Web.Areas.Common.Controllers
                 return NotFound();
             }
             ViewData["ContinenteId"] = new SelectList(await _unitOfWork.Continentes.GetAllAsync(), "ContinenteId", "Descricao", pais.ContinenteId);
-            ViewData["id"] = id;
             return View(pais);
         }
 
