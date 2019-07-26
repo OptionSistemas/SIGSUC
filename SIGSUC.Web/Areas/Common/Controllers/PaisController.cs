@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SIGSUC.Domain.Entities.Common;
@@ -153,6 +155,13 @@ namespace SIGSUC.Web.Areas.Common.Controllers
             _unitOfWork.Paises.Remove(pais);
             await _unitOfWork.Commit();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> Data([DataSourceRequest]DataSourceRequest request)
+        {
+            var paises = await _unitOfWork.Paises.GetAllAsync();
+            var dsResult = paises.ToDataSourceResult(request);
+            return Json(dsResult);
         }
 
 

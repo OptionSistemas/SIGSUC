@@ -6,42 +6,55 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CodigoArea)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Continente)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CodigoArea)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Continente.Descricao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PaisId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PaisId">Details</a> |
-                <a  asp-action="Delete" asp-route-id="@item.PaisId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+@(Html.Kendo().Grid<Pais>
+    ()
+    .Name("Grid")
+    .Columns(columns =>
+        {
+    columns.Bound(p => p.PaisId);
+    columns.Bound(p => p.Nome).Width(300);
+    columns.Bound(p => p.CodigoArea).Width(140);
+    columns.Command(command => command.Destroy()).Width(150);
+    })
+    .ToolBar(toolbar =>
+        {
+    toolbar.Create();
+    toolbar.Save();
+    })
+    .Editable(editable => editable.Mode(GridEditMode.InCell))
+    .Pageable()
+    .Navigatable()
+    .Sortable()
+
+    .Scrollable()
+    .DataSource(dataSource => dataSource
+    .Ajax()
+    .Batch(true)
+    .PageSize(20)
+    .ServerOperation(false)
+    .Events(events => events.Error("error_handler"))
+    .Model(model => model.Id(p => p.PaisId))
+    .Create("Editing_Create", "Grid")
+    .Read("Data", "Pais")
+    .Update("Editing_Update", "Grid")
+    .Destroy("Editing_Destroy", "Grid")
+    )
+)
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+</script>
+
+
